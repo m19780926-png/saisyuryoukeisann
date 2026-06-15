@@ -73,28 +73,35 @@
         color: #333;
     }
 
-    .formula {
-        margin-top: 28px;
-        font-size: 16px;
-        color: #555;
-        line-height: 1.6;
-        background: #f7f7fa;
-        padding: 14px;
-        border-radius: 10px;
+    /* ▼ ここが計算式カード（画像のように表示） */
+    .formula-card {
+        margin-top: 30px;
+        background: #ffffff;
+        padding: 20px;
+        border-radius: 14px;
+        box-shadow: 0 3px 12px rgba(0,0,0,0.1);
+        border-left: 6px solid #4CAF50;
     }
 
     .formula-title {
+        font-size: 20px;
         font-weight: bold;
-        margin-bottom: 6px;
+        margin-bottom: 10px;
     }
 
-    .formula-code {
-        font-family: "SF Mono", Menlo, Consolas, monospace;
-        font-size: 15px;
-        background: #eee;
-        padding: 8px;
-        border-radius: 8px;
-        margin-top: 6px;
+    .formula-body {
+        font-size: 18px;
+        line-height: 1.6;
+    }
+
+    .formula-math {
+        margin-top: 12px;
+        padding: 12px;
+        background: #f3f3f7;
+        border-radius: 10px;
+        font-family: "SF Mono", Consolas, monospace;
+        font-size: 17px;
+        line-height: 1.6;
     }
 </style>
 </head>
@@ -116,11 +123,18 @@
 
     <div class="result" id="result"></div>
 
-    <div class="formula">
-        <div class="formula-title">【計算式】気体ガス採取量（mL）</div>
-        <div>分母：ボンベガス濃度 − 作製濃度 が 0 以下の場合はエラーとする。</div>
-        <div class="formula-code">
-            採取量(mL) = 希釈ガス作製量(L) × 作製濃度(ppm) ÷ {ボンベガス濃度(ppm) − 作製濃度(ppm)} × 1000
+    <!-- ▼ 計算式カード（画像のように表示） -->
+    <div class="formula-card">
+        <div class="formula-title">【気体ガス採取量 計算式】</div>
+
+        <div class="formula-body">
+            希釈ガス作製量 (L) と作製濃度 (ppm) をもとに、<br>
+            ボンベガス濃度との差から採取量を求めます。
+        </div>
+
+        <div class="formula-math">
+            採取量 (mL) = 希釈ガス作製量 (L) × 作製濃度 (ppm)<br>
+            ÷ { ボンベガス濃度 (ppm) − 作製濃度 (ppm) } × 1000
         </div>
     </div>
 </div>
