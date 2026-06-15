@@ -2,32 +2,74 @@
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
-<title>気体ガス採取量 計算ツール</title>
+<title>採取量計算ツール</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
 <style>
     body {
         font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial;
-        background: #f2f2f7;
+        background: #eef1f5;
         padding: 20px;
         margin: 0;
     }
 
     .app-card {
         background: #ffffff;
-        padding: 24px;
-        border-radius: 18px;
-        box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+        padding: 26px;
+        border-radius: 20px;
+        box-shadow: 0 6px 20px rgba(0,0,0,0.12);
         max-width: 600px;
         margin: auto;
+        display: none;
+        animation: fadeIn 0.35s ease;
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(12px); }
+        to   { opacity: 1; transform: translateY(0); }
     }
 
     h2 {
-        font-size: 28px;
+        font-size: 30px;
         font-weight: bold;
         text-align: center;
-        margin-bottom: 20px;
+        margin-bottom: 24px;
         line-height: 1.4;
+    }
+
+    .menu-item {
+        background: #ffffff;
+        border-radius: 18px;
+        padding: 20px;
+        margin: 16px 0;
+        display: flex;
+        align-items: center;
+        box-shadow: 0 4px 14px rgba(0,0,0,0.1);
+        cursor: pointer;
+        transition: transform 0.1s ease;
+    }
+
+    .menu-item:active {
+        transform: scale(0.97);
+    }
+
+    .menu-icon {
+        width: 60px;
+        height: 60px;
+        border-radius: 16px;
+        background: linear-gradient(135deg, #4CAF50, #2e8b3f);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 32px;
+        margin-right: 18px;
+    }
+
+    .menu-text {
+        font-size: 22px;
+        font-weight: bold;
+        color: #333;
     }
 
     label {
@@ -48,7 +90,7 @@
         box-sizing: border-box;
     }
 
-    button {
+    button.calc-btn {
         width: 100%;
         padding: 16px;
         font-size: 22px;
@@ -61,8 +103,15 @@
         box-shadow: 0 4px 12px rgba(0,0,0,0.2);
     }
 
-    button:active {
-        transform: scale(0.97);
+    .back-btn {
+        margin-top: 24px;
+        width: 100%;
+        padding: 14px;
+        font-size: 20px;
+        background: #888;
+        color: white;
+        border: none;
+        border-radius: 10px;
     }
 
     .result {
@@ -73,7 +122,6 @@
         color: #333;
     }
 
-    /* ▼ 計算式カード（スマホ完全対応） */
     .formula-card {
         margin-top: 30px;
         background: #ffffff;
@@ -96,7 +144,6 @@
         text-align: center;
     }
 
-    /* ▼ 分数をスマホでも崩れないようにする */
     .fraction {
         display: inline-block;
         width: 100%;
@@ -116,12 +163,53 @@
         padding-top: 6px;
         width: 100%;
     }
+
+    table {
+        width: 100%;
+        font-size: 18px;
+        border-collapse: collapse;
+        margin-top: 10px;
+    }
+
+    th, td {
+        padding: 8px;
+    }
+
+    th {
+        text-align: left;
+        border-bottom: 2px solid #ccc;
+    }
+
+    td {
+        border-bottom: 1px solid #eee;
+    }
 </style>
 </head>
 <body>
 
-<div class="app-card">
-    <h2>気体ガス採取量<br>計算ツール</h2>
+<!-- ▼ ホーム画面 -->
+<div id="menu" class="app-card" style="display:block;">
+    <h2>採取量計算ツール</h2>
+
+    <div class="menu-item" onclick="showTool('gas')">
+        <div class="menu-icon">💨</div>
+        <div class="menu-text">気体ガス採取量</div>
+    </div>
+
+    <div class="menu-item" onclick="showTool('liquid')">
+        <div class="menu-icon">💧</div>
+        <div class="menu-text">薬液採取量</div>
+    </div>
+
+    <div class="menu-item" onclick="showTool('lel')">
+        <div class="menu-icon">🔥</div>
+        <div class="menu-text">可燃性ガス LEL 一覧</div>
+    </div>
+</div>
+
+<!-- ▼ 気体ツール -->
+<div id="gas" class="app-card">
+    <h2>気体ガス採取量</h2>
 
     <label>希釈ガス作製量（L）</label>
     <input type="number" id="makeVolume" step="0.01">
@@ -132,52 +220,151 @@
     <label>ボンベガス濃度（ppm）</label>
     <input type="number" id="cylinderPPM" step="0.01">
 
-    <button onclick="calc()">計算する</button>
+    <button class="calc-btn" onclick="calcGas()">計算する</button>
 
-    <div class="result" id="result"></div>
+    <div class="result" id="gasResult"></div>
 
-    <!-- ▼ 計算式カード（スマホ完全対応） -->
     <div class="formula-card">
         <div class="formula-title">1. 気体ガス採取量計算式</div>
 
         <div class="formula-math">
-
             <div class="fraction">
-                <span class="top">
-                    希釈ガス作製量 (L) × 作製濃度 (ppm)
-                </span>
-                <span class="bottom">
-                    ボンベガス濃度 (ppm) − 作製濃度 (ppm)
-                </span>
+                <span class="top">希釈ガス作製量(L) × 作製濃度(ppm)</span>
+                <span class="bottom">ボンベガス濃度(ppm) − 作製濃度(ppm)</span>
             </div>
-
             × 1000<br><br>
-            = 採取量 (mL)
+            = 採取量(mL)
         </div>
     </div>
+
+    <button class="back-btn" onclick="backMenu()">← ホームに戻る</button>
+</div>
+
+<!-- ▼ 薬液ツール -->
+<div id="liquid" class="app-card">
+    <h2>薬液採取量</h2>
+
+    <label>室温（℃）</label>
+    <input type="number" id="roomTemp" step="0.1">
+
+    <label>ガス作製量（L）</label>
+    <input type="number" id="gasVolume" step="0.01">
+
+    <label>薬液の分子量</label>
+    <input type="number" id="molWeight" step="0.01">
+
+    <label>作製濃度（ppm）</label>
+    <input type="number" id="makePPM2" step="0.01">
+
+    <label>薬液の比重</label>
+    <input type="number" id="density" step="0.001">
+
+    <button class="calc-btn" onclick="calcLiquid()">計算する</button>
+
+    <div class="result" id="liquidResult"></div>
+
+    <div class="formula-card">
+        <div class="formula-title">3. 薬液採取量計算式</div>
+
+        <div class="formula-math">
+            <div class="fraction">
+                <span class="top">273(K)</span>
+                <span class="bottom">273(K) + 室温(°C)</span>
+            </div>
+
+            ×
+
+            <div class="fraction">
+                <span class="top">ガス作製量(L) × 分子量 × 作製濃度(ppm)</span>
+                <span class="bottom">22.4 × 1000 × 比重</span>
+            </div>
+
+            <br><br>
+            = 採取量(μL)
+        </div>
+    </div>
+
+    <button class="back-btn" onclick="backMenu()">← ホームに戻る</button>
+</div>
+
+<!-- ▼ LEL 一覧ツール -->
+<div id="lel" class="app-card">
+    <h2>可燃性ガス LEL 一覧</h2>
+
+    <div class="formula-card">
+        <div class="formula-title">主要ガスの爆発下限界（LEL）</div>
+
+        <table>
+            <tr><th>ガス名</th><th style="text-align:right;">LEL（%）</th></tr>
+            <tr><td>水素（H₂）</td><td style="text-align:right;">4.0</td></tr>
+            <tr><td>メタン（CH₄）</td><td style="text-align:right;">5.0</td></tr>
+            <tr><td>プロパン（C₃H₈）</td><td style="text-align:right;">2.1</td></tr>
+            <tr><td>ブタン（C₄H₁₀）</td><td style="text-align:right;">1.8</td></tr>
+            <tr><td>アセチレン（C₂H₂）</td><td style="text-align:right;">2.5</td></tr>
+            <tr><td>一酸化炭素（CO）</td><td style="text-align:right;">12.5</td></tr>
+            <tr><td>エタノール蒸気</td><td style="text-align:right;">3.3</td></tr>
+            <tr><td>硫化水素（H₂S）</td><td style="text-align:right;">4.3</td></tr>
+        </table>
+    </div>
+
+    <button class="back-btn" onclick="backMenu()">← ホームに戻る</button>
 </div>
 
 <script>
-function calc() {
-    const makeVolume = parseFloat(document.getElementById("makeVolume").value);
-    const makePPM = parseFloat(document.getElementById("makePPM").value);
-    const cylinderPPM = parseFloat(document.getElementById("cylinderPPM").value);
+function showTool(id) {
+    menu.style.display = "none";
+    gas.style.display = "none";
+    liquid.style.display = "none";
+    lel.style.display = "none";
 
-    if (makeVolume <= 0 || makePPM <= 0 || cylinderPPM <= 0) {
-        document.getElementById("result").innerHTML = "入力値が不正です。";
+    document.getElementById(id).style.display = "block";
+}
+
+function backMenu() {
+    menu.style.display = "block";
+    gas.style.display = "none";
+    liquid.style.display = "none";
+    lel.style.display = "none";
+}
+
+function calcGas() {
+    const v = parseFloat(makeVolume.value);
+    const ppm = parseFloat(makePPM.value);
+    const cyl = parseFloat(cylinderPPM.value);
+
+    if (v <= 0 || ppm <= 0 || cyl <= 0) {
+        gasResult.innerHTML = "入力値が不正です。";
         return;
     }
 
-    const denom = cylinderPPM - makePPM;
+    const denom = cyl - ppm;
     if (denom <= 0) {
-        document.getElementById("result").innerHTML = "分母（ボンベ濃度 − 作製濃度）が 0 以下です。";
+        gasResult.innerHTML = "分母が 0 以下です。";
         return;
     }
 
-    const result = (makeVolume * makePPM / denom) * 1000;
+    const result = (v * ppm / denom) * 1000;
+    gasResult.innerHTML = "採取量：" + result.toFixed(2) + " mL";
+}
 
-    document.getElementById("result").innerHTML =
-        "採取量：" + result.toFixed(2) + " mL";
+function calcLiquid() {
+    const t = parseFloat(roomTemp.value);
+    const v = parseFloat(gasVolume.value);
+    const mw = parseFloat(molWeight.value);
+    const ppm = parseFloat(makePPM2.value);
+    const d = parseFloat(density.value);
+
+    if (t < 0 || v <= 0 || mw <= 0 || ppm <= 0 || d <= 0) {
+        liquidResult.innerHTML = "入力値が不正です。";
+        return;
+    }
+
+    const tempFactor = 273 / (273 + t);
+    const numerator = v * mw * ppm;
+    const denominator = 22.4 * 1000 * d;
+
+    const result = tempFactor * (numerator / denominator);
+    liquidResult.innerHTML = "採取量：" + result.toFixed(2) + " μL";
 }
 </script>
 
