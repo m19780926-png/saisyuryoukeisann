@@ -7,21 +7,31 @@
 
 <style>
     body {
-        font-family: Arial;
-        padding: 16px;
-        font-size: 20px;
-        line-height: 1.6;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial;
+        background: #f2f2f7;
+        padding: 20px;
+        margin: 0;
+    }
+
+    .app-card {
+        background: #ffffff;
+        padding: 24px;
+        border-radius: 18px;
+        box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+        max-width: 600px;
+        margin: auto;
     }
 
     h2 {
         font-size: 28px;
         font-weight: bold;
-        line-height: 1.4;
+        text-align: center;
         margin-bottom: 20px;
+        line-height: 1.4;
     }
 
     label {
-        font-size: 22px;
+        font-size: 20px;
         font-weight: bold;
         margin-top: 18px;
         display: block;
@@ -31,45 +41,56 @@
         width: 100%;
         padding: 14px;
         margin-top: 6px;
-        font-size: 22px;
-        border-radius: 8px;
+        font-size: 20px;
+        border-radius: 10px;
         border: 1px solid #ccc;
+        background: #fafafa;
     }
 
     button {
         width: 100%;
         padding: 16px;
-        font-size: 24px;
-        margin-top: 20px;
-        background-color: #4CAF50;
+        font-size: 22px;
+        margin-top: 26px;
+        background: linear-gradient(135deg, #4CAF50, #2e8b3f);
         color: white;
         border: none;
-        border-radius: 10px;
+        border-radius: 12px;
+        font-weight: bold;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    }
+
+    button:active {
+        transform: scale(0.97);
     }
 
     .result {
-        margin-top: 24px;
+        margin-top: 28px;
         font-size: 26px;
         font-weight: bold;
+        text-align: center;
+        color: #333;
     }
 </style>
 </head>
 <body>
 
-<h2>気体ガス採取量<br>計算ツール</h2>
+<div class="app-card">
+    <h2>気体ガス採取量<br>計算ツール</h2>
 
-<label>希釈ガス作製量（L）</label>
-<input type="number" id="makeVolume" step="0.01">
+    <label>希釈ガス作製量（L）</label>
+    <input type="number" id="makeVolume" step="0.01">
 
-<label>作製濃度（ppm）</label>
-<input type="number" id="makePPM" step="0.01">
+    <label>作製濃度（ppm）</label>
+    <input type="number" id="makePPM" step="0.01">
 
-<label>ボンベガス濃度（ppm）</label>
-<input type="number" id="cylinderPPM" step="0.01">
+    <label>ボンベガス濃度（ppm）</label>
+    <input type="number" id="cylinderPPM" step="0.01">
 
-<button onclick="calc()">計算する</button>
+    <button onclick="calc()">計算する</button>
 
-<div class="result" id="result"></div>
+    <div class="result" id="result"></div>
+</div>
 
 <script>
 function calc() {
