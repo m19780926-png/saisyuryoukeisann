@@ -131,6 +131,39 @@
         border-left: 6px solid #000000;
     }
 
+    .formula-title {
+        font-size: 20px;
+        font-weight: bold;
+        margin-bottom: 12px;
+    }
+
+    .formula-math {
+        font-family: "SF Mono", Consolas, monospace;
+        font-size: 17px;
+        line-height: 1.6;
+        text-align: center;
+    }
+
+    .fraction {
+        display: inline-block;
+        width: 100%;
+        text-align: center;
+        margin: 10px 0;
+    }
+
+    .fraction .top {
+        display: block;
+        padding-bottom: 6px;
+        border-bottom: 2px solid #000;
+        width: 100%;
+    }
+
+    .fraction .bottom {
+        display: block;
+        padding-top: 6px;
+        width: 100%;
+    }
+
     table {
         width: 100%;
         font-size: 18px;
@@ -149,6 +182,13 @@
 
     td {
         border-bottom: 1px solid #eee;
+    }
+
+    .search-result {
+        margin-top: 20px;
+        font-size: 22px;
+        font-weight: bold;
+        text-align: center;
     }
 </style>
 </head>
@@ -173,6 +213,7 @@
         <div class="menu-text">可燃性ガス LEL 一覧</div>
     </div>
 </div>
+
 <!-- ▼ 気体ツール -->
 <div id="gas" class="app-card">
     <h2>気体ガス採取量</h2>
@@ -192,6 +233,7 @@
 
     <div class="formula-card">
         <div class="formula-title">1. 気体ガス採取量計算式</div>
+
         <div class="formula-math">
             <div class="fraction">
                 <span class="top">希釈ガス作製量(L) × 作製濃度(ppm)</span>
@@ -230,16 +272,20 @@
 
     <div class="formula-card">
         <div class="formula-title">3. 薬液採取量計算式</div>
+
         <div class="formula-math">
             <div class="fraction">
                 <span class="top">273(K)</span>
                 <span class="bottom">273(K) + 室温(°C)</span>
             </div>
+
             ×
+
             <div class="fraction">
                 <span class="top">ガス作製量(L) × 分子量 × 作製濃度(ppm)</span>
                 <span class="bottom">22.4 × 1000 × 比重</span>
             </div>
+
             <br><br>
             = 採取量(μL)
         </div>
@@ -247,16 +293,16 @@
 
     <button class="back-btn" onclick="backMenu()">← ホームに戻る</button>
 </div>
-<!-- ▼ LEL 一覧（軽量版） -->
+
+<!-- ▼ LEL 一覧ツール -->
 <div id="lel" class="app-card">
-    <h2>可燃性ガス LEL 一覧（50種類）</h2>
+    <h2>可燃性ガス LEL 一覧</h2>
 
     <div class="formula-card">
-        <div class="formula-title">爆発下限界（LEL）一覧</div>
+        <div class="formula-title">主要ガスの爆発下限界（LEL）</div>
 
         <table>
             <tr><th>ガス名</th><th style="text-align:right;">LEL（%）</th></tr>
-
             <tr><td>水素（H₂）</td><td style="text-align:right;">4.0</td></tr>
             <tr><td>メタン（CH₄）</td><td style="text-align:right;">5.0</td></tr>
             <tr><td>エタン（C₂H₆）</td><td style="text-align:right;">3.0</td></tr>
@@ -267,54 +313,34 @@
             <tr><td>ブタン（C₄H₁₀）</td><td style="text-align:right;">1.8</td></tr>
             <tr><td>イソブタン（i-C₄H₁₀）</td><td style="text-align:right;">1.8</td></tr>
             <tr><td>ペンタン（C₅H₁₂）</td><td style="text-align:right;">1.4</td></tr>
-            <tr><td>イソペンタン（i-C₅H₁₂）</td><td style="text-align:right;">1.4</td></tr>
             <tr><td>ヘキサン（C₆H₁₄）</td><td style="text-align:right;">1.2</td></tr>
-            <tr><td>シクロヘキサン（C₆H₁₂）</td><td style="text-align:right;">1.3</td></tr>
             <tr><td>ヘプタン（C₇H₁₆）</td><td style="text-align:right;">1.1</td></tr>
             <tr><td>オクタン（C₈H₁₈）</td><td style="text-align:right;">1.0</td></tr>
-            <tr><td>ノナン（C₉H₂₀）</td><td style="text-align:right;">0.9</td></tr>
-            <tr><td>デカン（C₁₀H₂₂）</td><td style="text-align:right;">0.8</td></tr>
-
-            <tr><td>一酸化炭素（CO）</td><td style="text-align:right;">12.5</td></tr>
-
             <tr><td>エタノール蒸気（C₂H₅OH）</td><td style="text-align:right;">3.3</td></tr>
             <tr><td>メタノール蒸気（CH₃OH）</td><td style="text-align:right;">6.0</td></tr>
-            <tr><td>イソプロパノール（C₃H₈O）</td><td style="text-align:right;">2.0</td></tr>
-
-            <tr><td>アセトン（C₃H₆O）</td><td style="text-align:right;">2.6</td></tr>
-            <tr><td>プロピオンアルデヒド（C₃H₆O）</td><td style="text-align:right;">2.0</td></tr>
-
-            <tr><td>MEK（C₄H₈O）</td><td style="text-align:right;">1.8</td></tr>
-            <tr><td>トルエン（C₇H₈）</td><td style="text-align:right;">1.2</td></tr>
-            <tr><td>キシレン（C₈H₁₀）</td><td style="text-align:right;">1.1</td></tr>
-            <tr><td>エチルベンゼン（C₈H₁₀）</td><td style="text-align:right;">1.0</td></tr>
-            <tr><td>スチレン（C₈H₈）</td><td style="text-align:right;">1.1</td></tr>
-            <tr><td>ベンゼン（C₆H₆）</td><td style="text-align:right;">1.2</td></tr>
-
-            <tr><td>ジエチルエーテル（C₄H₁₀O）</td><td style="text-align:right;">1.9</td></tr>
-            <tr><td>テトラヒドロフラン（C₄H₈O）</td><td style="text-align:right;">2.0</td></tr>
-
-            <tr><td>酢酸エチル（C₄H₈O₂）</td><td style="text-align:right;">2.2</td></tr>
-            <tr><td>酢酸メチル（C₃H₆O₂）</td><td style="text-align:right;">3.1</td></tr>
-
             <tr><td>アンモニア（NH₃）</td><td style="text-align:right;">15</td></tr>
+            <tr><td>一酸化炭素（CO）</td><td style="text-align:right;">12.5</td></tr>
             <tr><td>硫化水素（H₂S）</td><td style="text-align:right;">4.3</td></tr>
             <tr><td>二硫化炭素（CS₂）</td><td style="text-align:right;">1.3</td></tr>
-
             <tr><td>ホルムアルデヒド（CH₂O）</td><td style="text-align:right;">7.0</td></tr>
-            <tr><td>アクリロニトリル（C₃H₃N）</td><td style="text-align:right;">2.8</td></tr>
-
-            <tr><td>エチレンオキシド（C₂H₄O）</td><td style="text-align:right;">3.0</td></tr>
-            <tr><td>アセトアルデヒド（C₂H₄O）</td><td style="text-align:right;">4.0</td></tr>
-            <tr><td>プロピレンオキシド（C₃H₆O）</td><td style="text-align:right;">2.3</td></tr>
-
-            <tr><td>アクリル酸メチル（C₄H₆O₂）</td><td style="text-align:right;">2.8</td></tr>
-            <tr><td>アクリル酸エチル（C₅H₈O₂）</td><td style="text-align:right;">2.0</td></tr>
-            <tr><td>アクリル酸ブチル（C₇H₁₂O₂）</td><td style="text-align:right;">1.4</td></tr>
-            <tr><td>アクリル酸（C₃H₄O₂）</td><td style="text-align:right;">2.0</td></tr>
-
+            <tr><td>アクリロニトリル（C₃H₃N）</td><td style="text-align:right;">3.0</td></tr>
+            <tr><td>エチルエーテル（C₄H₁₀O）</td><td style="text-align:right;">1.9</td></tr>
+            <tr><td>ベンゼン（C₆H₆）</td><td style="text-align:right;">1.2</td></tr>
+            <tr><td>トルエン（C₇H₈）</td><td style="text-align:right;">1.2</td></tr>
+            <tr><td>キシレン（C₈H₁₀）</td><td style="text-align:right;">1.1</td></tr>
+            <tr><td>スチレン（C₈H₈）</td><td style="text-align:right;">1.1</td></tr>
+            <tr><td>アセトン（C₃H₆O）</td><td style="text-align:right;">2.6</td></tr>
+            <tr><td>イソプロパノール（C₃H₈O）</td><td style="text-align:right;">2.0</td></tr>
+            <tr><td>ジエチルエーテル（C₄H₁₀O）</td><td style="text-align:right;">1.9</td></tr>
         </table>
     </div>
+
+    <label>ガス名または化学式で検索</label>
+    <input type="text" id="searchGas" placeholder="例：CH4, C3H6, 水素 など">
+
+    <button class="calc-btn" onclick="searchLEL()">検索する</button>
+
+    <div id="searchResult" class="search-result"></div>
 
     <button class="back-btn" onclick="backMenu()">← ホームに戻る</button>
 </div>
@@ -325,6 +351,7 @@ function showTool(id) {
     gas.style.display = "none";
     liquid.style.display = "none";
     lel.style.display = "none";
+
     document.getElementById(id).style.display = "block";
 }
 
@@ -340,7 +367,7 @@ function calcGas() {
     const ppm = parseFloat(makePPM.value);
     const cyl = parseFloat(cylinderPPM.value);
 
-    if (v <= 0 || ppm <= 0 || cyl <= 0) {
+    if (v <= 0 || ppm <= 0 || cyl <= 0 || isNaN(v) || isNaN(ppm) || isNaN(cyl)) {
         gasResult.innerHTML = "入力値が不正です。";
         return;
     }
@@ -362,7 +389,8 @@ function calcLiquid() {
     const ppm = parseFloat(makePPM2.value);
     const d = parseFloat(density.value);
 
-    if (t < 0 || v <= 0 || mw <= 0 || ppm <= 0 || d <= 0) {
+    if (t < 0 || v <= 0 || mw <= 0 || ppm <= 0 || d <= 0 ||
+        isNaN(t) || isNaN(v) || isNaN(mw) || isNaN(ppm) || isNaN(d)) {
         liquidResult.innerHTML = "入力値が不正です。";
         return;
     }
@@ -373,6 +401,65 @@ function calcLiquid() {
 
     const result = tempFactor * (numerator / denominator);
     liquidResult.innerHTML = "採取量：" + result.toFixed(2) + " μL";
+}
+
+/* ▼ LEL 30種類データベース（化学式検索対応） */
+const lelList = [
+    { name: "水素",           formula: "H2",      lel: 4.0 },
+    { name: "メタン",         formula: "CH4",     lel: 5.0 },
+    { name: "エタン",         formula: "C2H6",    lel: 3.0 },
+    { name: "エチレン",       formula: "C2H4",    lel: 2.7 },
+    { name: "アセチレン",     formula: "C2H2",    lel: 2.5 },
+    { name: "プロパン",       formula: "C3H8",    lel: 2.1 },
+    { name: "プロピレン",     formula: "C3H6",    lel: 2.0 },
+    { name: "ブタン",         formula: "C4H10",   lel: 1.8 },
+    { name: "イソブタン",     formula: "C4H10",   lel: 1.8 },
+    { name: "ペンタン",       formula: "C5H12",   lel: 1.4 },
+    { name: "ヘキサン",       formula: "C6H14",   lel: 1.2 },
+    { name: "ヘプタン",       formula: "C7H16",   lel: 1.1 },
+    { name: "オクタン",       formula: "C8H18",   lel: 1.0 },
+    { name: "エタノール蒸気", formula: "C2H5OH",  lel: 3.3 },
+    { name: "メタノール蒸気", formula: "CH3OH",   lel: 6.0 },
+    { name: "アンモニア",     formula: "NH3",     lel: 15.0 },
+    { name: "一酸化炭素",     formula: "CO",      lel: 12.5 },
+    { name: "硫化水素",       formula: "H2S",     lel: 4.3 },
+    { name: "二硫化炭素",     formula: "CS2",     lel: 1.3 },
+    { name: "ホルムアルデヒド", formula: "CH2O",  lel: 7.0 },
+    { name: "アクリロニトリル", formula: "C3H3N", lel: 3.0 },
+    { name: "エチルエーテル", formula: "C4H10O",  lel: 1.9 },
+    { name: "ベンゼン",       formula: "C6H6",    lel: 1.2 },
+    { name: "トルエン",       formula: "C7H8",    lel: 1.2 },
+    { name: "キシレン",       formula: "C8H10",   lel: 1.1 },
+    { name: "スチレン",       formula: "C8H8",    lel: 1.1 },
+    { name: "アセトン",       formula: "C3H6O",   lel: 2.6 },
+    { name: "イソプロパノール", formula: "C3H8O", lel: 2.0 },
+    { name: "ジエチルエーテル", formula: "C4H10O", lel: 1.9 }
+];
+
+function searchLEL() {
+    const input = document.getElementById("searchGas").value.trim();
+    const resultDiv = document.getElementById("searchResult");
+
+    if (!input) {
+        resultDiv.innerHTML = "ガス名または化学式を入力してください。";
+        return;
+    }
+
+    const keyword = input.toUpperCase();
+
+    const hit = lelList.find(item =>
+        item.name === input ||
+        item.formula.toUpperCase() === keyword
+    );
+
+    if (!hit) {
+        resultDiv.innerHTML = "該当するガスが見つかりませんでした。";
+        return;
+    }
+
+    resultDiv.innerHTML =
+        hit.name + "（" + hit.formula + "） の LEL は " +
+        hit.lel + " % です。";
 }
 </script>
 
