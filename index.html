@@ -15,7 +15,7 @@ body {
 
 .app-card {
     background: #ffffff;
-    padding: 26px;
+    padding: 22px;
     border-radius: 20px;
     box-shadow: 0 6px 20px rgba(0,0,0,0.12);
     max-width: 600px;
@@ -67,13 +67,14 @@ label {
 }
 
 input {
-    width: calc(100% - 4px);
+    width: 100%;
     padding: 14px;
     margin-top: 6px;
     font-size: 20px;
     border-radius: 10px;
     border: 1px solid #ccc;
     background: #fafafa;
+    box-sizing: border-box;
 }
 
 button.calc-btn {
@@ -215,8 +216,8 @@ td {
         <div class="formula-title">気体ガス採取量計算式</div>
         <div class="formula-math">
             <div class="fraction">
-                <span class="top">希釈ガス作製量(L) × 作製濃度(ppm)</span>
-                <span class="bottom">ボンベガス濃度(ppm) − 作製濃度(ppm)</span>
+                <span class="top">希釈ガス作製量 × 作製濃度</span>
+                <span class="bottom">ボンベ濃度 − 作製濃度</span>
             </div>
             × 1000 = 採取量(mL)
         </div>
@@ -253,7 +254,7 @@ td {
         <div class="formula-math">
             <div class="fraction">
                 <span class="top">273</span>
-                <span class="bottom">273 + 室温(℃)</span>
+                <span class="bottom">273 + 室温</span>
             </div>
             ×
             <div class="fraction">
@@ -352,9 +353,11 @@ function calcGas() {
     const v = parseFloat(makeVolume.value);
     const ppm = parseFloat(makePPM.value);
     const cyl = parseFloat(cylinderPPM.value);
-    if (v <= 0 || ppm <= 0 || cyl <= 0) return gasResult.innerHTML = "入力値が不正です。";
+    if (v <= 0 || ppm <= 0 || cyl <= 0)
+        return gasResult.innerHTML = "入力値が不正です。";
     const denom = cyl - ppm;
-    if (denom <= 0) return gasResult.innerHTML = "分母が 0 以下です。";
+    if (denom <= 0)
+        return gasResult.innerHTML = "分母が 0 以下です。";
     const result = (v * ppm / denom) * 1000;
     gasResult.innerHTML = "採取量：" + result.toFixed(2) + " mL";
 }
