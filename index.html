@@ -193,6 +193,12 @@ td {
         <div class="menu-text">SiH4採取圧力計目安</div>
     </div>
 
+    <!-- ★ 追加：アンプル希釈量 -->
+    <div class="menu-item" onclick="showTool('ampule')">
+        <div class="menu-icon">🧪</div>
+        <div class="menu-text">アンプル希釈量</div>
+    </div>
+
     <div class="menu-item" onclick="showTool('lel')">
         <div class="menu-icon">🔥</div>
         <div class="menu-text">可燃性ガス LEL 一覧</div>
@@ -272,27 +278,6 @@ td {
     <button class="back-btn" onclick="backMenu()">← ホームに戻る</button>
 </div>
 
-<!-- ▼ LEL一覧（10種類） -->
-<div id="lel" class="app-card">
-    <h2>可燃性ガス LEL 一覧</h2>
-
-    <table>
-        <tr><th>ガス名</th><th>化学式</th><th>LEL(%)</th></tr>
-        <tr><td>水素</td><td>H2</td><td>4.0</td></tr>
-        <tr><td>メタン</td><td>CH4</td><td>5.0</td></tr>
-        <tr><td>プロパン</td><td>C3H8</td><td>2.1</td></tr>
-        <tr><td>ブタン</td><td>C4H10</td><td>1.8</td></tr>
-        <tr><td>アセチレン</td><td>C2H2</td><td>2.5</td></tr>
-        <tr><td>一酸化炭素</td><td>CO</td><td>12.5</td></tr>
-        <tr><td>エタノール蒸気</td><td>C2H5OH</td><td>3.3</td></tr>
-        <tr><td>硫化水素</td><td>H2S</td><td>4.3</td></tr>
-        <tr><td>エチレン</td><td>C2H4</td><td>2.7</td></tr>
-        <tr><td>アンモニア</td><td>NH3</td><td>15.0</td></tr>
-    </table>
-
-    <button class="back-btn" onclick="backMenu()">← ホームに戻る</button>
-</div>
-
 <!-- ▼ SiH4 -->
 <div id="sih4" class="app-card">
     <h2>SiH4採取圧力計目安</h2>
@@ -335,6 +320,55 @@ td {
     <button class="back-btn" onclick="backMenu()">← ホームに戻る</button>
 </div>
 
+<!-- ▼ アンプル希釈量（新規追加） -->
+<div id="ampule" class="app-card">
+    <h2>アンプル希釈量計算</h2>
+
+    <label>アンプルガス封入量（cc）</label>
+    <input type="number" id="amp_cc">
+
+    <label>作りたいガス濃度（ppm）</label>
+    <input type="number" id="amp_ppm">
+
+    <button class="calc-btn" onclick="calcAmpule()">計算する</button>
+
+    <div class="result" id="ampResult"></div>
+
+    <div class="formula-card">
+        <div class="formula-title">希釈量計算式</div>
+        <div class="formula-math">
+            <div class="fraction">
+                <span class="top">アンプル封入量 × 1000</span>
+                <span class="bottom">作製濃度(ppm)</span>
+            </div>
+            = ガス作製希釈量(L)
+        </div>
+    </div>
+
+    <button class="back-btn" onclick="backMenu()">← ホームに戻る</button>
+</div>
+
+<!-- ▼ LEL一覧 -->
+<div id="lel" class="app-card">
+    <h2>可燃性ガス LEL 一覧</h2>
+
+    <table>
+        <tr><th>ガス名</th><th>化学式</th><th>LEL(%)</th></tr>
+        <tr><td>水素</td><td>H2</td><td>4.0</td></tr>
+        <tr><td>メタン</td><td>CH4</td><td>5.0</td></tr>
+        <tr><td>プロパン</td><td>C3H8</td><td>2.1</td></tr>
+        <tr><td>ブタン</td><td>C4H10</td><td>1.8</td></tr>
+        <tr><td>アセチレン</td><td>C2H2</td><td>2.5</td></tr>
+        <tr><td>一酸化炭素</td><td>CO</td><td>12.5</td></tr>
+        <tr><td>エタノール蒸気</td><td>C2H5OH</td><td>3.3</td></tr>
+        <tr><td>硫化水素</td><td>H2S</td><td>4.3</td></tr>
+        <tr><td>エチレン</td><td>C2H4</td><td>2.7</td></tr>
+        <tr><td>アンモニア</td><td>NH3</td><td>15.0</td></tr>
+    </table>
+
+    <button class="back-btn" onclick="backMenu()">← ホームに戻る</button>
+</div>
+
 <script>
 function showTool(id) {
     menu.style.display = "none";
@@ -342,6 +376,7 @@ function showTool(id) {
     liquid.style.display = "none";
     lel.style.display = "none";
     sih4.style.display = "none";
+    ampule.style.display = "none";
     document.getElementById(id).style.display = "block";
 }
 
@@ -351,6 +386,7 @@ function backMenu() {
     liquid.style.display = "none";
     lel.style.display = "none";
     sih4.style.display = "none";
+    ampule.style.display = "none";
 }
 
 function calcGas() {
@@ -393,6 +429,19 @@ function calcSiH4() {
     sih4Result.innerHTML =
         "SiH4採取量：" + take_ml.toFixed(2) + " mL<br>" +
         "圧力目安：" + pressure.toFixed(3) + " MPa";
+}
+
+function calcAmpule() {
+    const cc = parseFloat(amp_cc.value);
+    const ppm = parseFloat(amp_ppm.value);
+
+    if (cc <= 0 || ppm <= 0)
+        return ampResult.innerHTML = "入力値が不正です。";
+
+    const result = (cc * 1000) / ppm;
+
+    ampResult.innerHTML =
+        "ガス作製希釈量：" + result.toFixed(2) + " L";
 }
 
 // ★ Service Worker 登録
