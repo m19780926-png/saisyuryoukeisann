@@ -1,4 +1,4 @@
-const CACHE_NAME = "saisyuryoukeisann-cache-v1";
+const CACHE_NAME = "saisyuryoukeisann-cache-v2";
 const URLS_TO_CACHE = [
   "/saisyuryoukeisann/",
   "/saisyuryoukeisann/index.html",
