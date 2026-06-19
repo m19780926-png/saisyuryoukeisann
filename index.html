@@ -5,7 +5,6 @@
 <title>採取量計算ツール</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<!-- ★ PWA 用 manifest を読み込む -->
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#4CAF50">
 
@@ -190,10 +189,14 @@ td {
 
     <div class="menu-item" onclick="showTool('sih4')">
         <div class="menu-icon">🧴</div>
-        <div class="menu-text">SiH4採取圧力計目安</div>
+        <div class="menu-text">SiH4採取圧力目安</div>
     </div>
 
-    <!-- ★ 追加：アンプル希釈量 -->
+    <div class="menu-item" onclick="showTool('ph3')">
+        <div class="menu-icon">☣️</div>
+        <div class="menu-text">PH₃採取圧力目安</div>
+    </div>
+
     <div class="menu-item" onclick="showTool('ampule')">
         <div class="menu-icon">🧪</div>
         <div class="menu-text">アンプル希釈量</div>
@@ -204,172 +207,48 @@ td {
         <div class="menu-text">可燃性ガス LEL 一覧</div>
     </div>
 </div>
-
-<!-- ▼ 気体 -->
-<div id="gas" class="app-card">
-    <h2>気体ガス採取量</h2>
-
-    <label>希釈ガス作製量（L）</label>
-    <input type="number" id="makeVolume">
-
-    <label>作製濃度（ppm）</label>
-    <input type="number" id="makePPM">
-
-    <label>ボンベガス濃度（ppm）</label>
-    <input type="number" id="cylinderPPM">
-
-    <button class="calc-btn" onclick="calcGas()">計算する</button>
-
-    <div class="result" id="gasResult"></div>
-
-    <div class="formula-card">
-        <div class="formula-title">気体ガス採取量計算式</div>
-        <div class="formula-math">
-            <div class="fraction">
-                <span class="top">希釈ガス作製量 × 作製濃度</span>
-                <span class="bottom">ボンベ濃度 − 作製濃度</span>
-            </div>
-            × 1000 = 採取量(mL)
-        </div>
-    </div>
-
-    <button class="back-btn" onclick="backMenu()">← ホームに戻る</button>
-</div>
-
-<!-- ▼ 薬液 -->
-<div id="liquid" class="app-card">
-    <h2>薬液採取量</h2>
-
-    <label>室温（℃）</label>
-    <input type="number" id="roomTemp">
+<!-- ▼ PH3 -->
+<div id="ph3" class="app-card">
+    <h2>PH₃採取圧力目安</h2>
 
     <label>ガス作製量（L）</label>
-    <input type="number" id="gasVolume">
+    <input type="number" id="ph3_makeVolume">
 
-    <label>薬液の分子量</label>
-    <input type="number" id="molWeight">
+    <label>作製するPH₃濃度（ppm）</label>
+    <input type="number" id="ph3_makePPM">
 
-    <label>作製濃度（ppm）</label>
-    <input type="number" id="makePPM2">
+    <label>PH₃缶濃度（ppm）</label>
+    <input type="number" id="ph3_cylinderPPM">
 
-    <label>薬液の比重</label>
-    <input type="number" id="density">
+    <button class="calc-btn" onclick="calcPH3()">計算する</button>
 
-    <button class="calc-btn" onclick="calcLiquid()">計算する</button>
-
-    <div class="result" id="liquidResult"></div>
+    <div class="result" id="ph3Result"></div>
 
     <div class="formula-card">
-        <div class="formula-title">薬液採取量計算式</div>
-        <div class="formula-math">
-            <div class="fraction">
-                <span class="top">273</span>
-                <span class="bottom">273 + 室温</span>
-            </div>
-            ×
-            <div class="fraction">
-                <span class="top">ガス作製量 × 分子量 × 作製濃度</span>
-                <span class="bottom">22.4 × 1000 × 比重</span>
-            </div>
-            = 採取量(μL)
-        </div>
-    </div>
-
-    <button class="back-btn" onclick="backMenu()">← ホームに戻る</button>
-</div>
-
-<!-- ▼ SiH4 -->
-<div id="sih4" class="app-card">
-    <h2>SiH4採取圧力計目安</h2>
-
-    <label>ガス作製量（L）</label>
-    <input type="number" id="sih4_makeVolume">
-
-    <label>作製するSiH4濃度（ppm）</label>
-    <input type="number" id="sih4_makePPM">
-
-    <label>SiH4ボンベ濃度（ppm）</label>
-    <input type="number" id="sih4_cylinderPPM">
-
-    <button class="calc-btn" onclick="calcSiH4()">計算する</button>
-
-    <div class="result" id="sih4Result"></div>
-
-    <div class="formula-card">
-        <div class="formula-title">SiH4採取量計算式</div>
+        <div class="formula-title">PH₃採取量計算式</div>
         <div class="formula-math">
             <div class="fraction">
                 <span class="top">ガス作製量 × 作製濃度</span>
-                <span class="bottom">ボンベ濃度 − 作製濃度</span>
+                <span class="bottom">缶濃度 − 作製濃度</span>
             </div>
             × 1000 = 採取量(mL)
         </div>
     </div>
 
     <div class="formula-card">
-        <div class="formula-title">SiH4圧力目安計算式</div>
+        <div class="formula-title">PH₃圧力目安計算式</div>
         <div class="formula-math">
             <div class="fraction">
                 <span class="top">採取量(mL)</span>
                 <span class="bottom">1000</span>
             </div>
-            × 0.175 = 圧力(MPa)
+            × 0.17 = 圧力(MPa)
         </div>
     </div>
 
     <button class="back-btn" onclick="backMenu()">← ホームに戻る</button>
 </div>
-
-<!-- ▼ アンプル希釈量（新規追加） -->
-<div id="ampule" class="app-card">
-    <h2>アンプル希釈量計算</h2>
-
-    <label>アンプルガス封入量（cc）</label>
-    <input type="number" id="amp_cc">
-
-    <label>作りたいガス濃度（ppm）</label>
-    <input type="number" id="amp_ppm">
-
-    <button class="calc-btn" onclick="calcAmpule()">計算する</button>
-
-    <div class="result" id="ampResult"></div>
-
-    <div class="formula-card">
-        <div class="formula-title">希釈量計算式</div>
-        <div class="formula-math">
-            <div class="fraction">
-                <span class="top">アンプル封入量 × 1000</span>
-                <span class="bottom">作製濃度(ppm)</span>
-            </div>
-            = ガス作製希釈量(L)
-        </div>
-    </div>
-
-    <button class="back-btn" onclick="backMenu()">← ホームに戻る</button>
-</div>
-
-<!-- ▼ LEL一覧 -->
-<div id="lel" class="app-card">
-    <h2>可燃性ガス LEL 一覧</h2>
-
-    <table>
-        <tr><th>ガス名</th><th>化学式</th><th>LEL(%)</th></tr>
-        <tr><td>水素</td><td>H2</td><td>4.0</td></tr>
-        <tr><td>メタン</td><td>CH4</td><td>5.0</td></tr>
-        <tr><td>プロパン</td><td>C3H8</td><td>2.1</td></tr>
-        <tr><td>ブタン</td><td>C4H10</td><td>1.8</td></tr>
-        <tr><td>アセチレン</td><td>C2H2</td><td>2.5</td></tr>
-        <tr><td>一酸化炭素</td><td>CO</td><td>12.5</td></tr>
-        <tr><td>エタノール蒸気</td><td>C2H5OH</td><td>3.3</td></tr>
-        <tr><td>硫化水素</td><td>H2S</td><td>4.3</td></tr>
-        <tr><td>エチレン</td><td>C2H4</td><td>2.7</td></tr>
-        <tr><td>アンモニア</td><td>NH3</td><td>15.0</td></tr>
-    </table>
-
-    <button class="back-btn" onclick="backMenu()">← ホームに戻る</button>
-</div>
-
-<script>
+    <script>
 function showTool(id) {
     menu.style.display = "none";
     gas.style.display = "none";
@@ -377,6 +256,7 @@ function showTool(id) {
     lel.style.display = "none";
     sih4.style.display = "none";
     ampule.style.display = "none";
+    ph3.style.display = "none";
     document.getElementById(id).style.display = "block";
 }
 
@@ -387,50 +267,88 @@ function backMenu() {
     lel.style.display = "none";
     sih4.style.display = "none";
     ampule.style.display = "none";
+    ph3.style.display = "none";
 }
 
+/* ▼ 気体ガス採取量 */
 function calcGas() {
     const v = parseFloat(makeVolume.value);
     const ppm = parseFloat(makePPM.value);
     const cyl = parseFloat(cylinderPPM.value);
+
     if (v <= 0 || ppm <= 0 || cyl <= 0)
         return gasResult.innerHTML = "入力値が不正です。";
+
     const denom = cyl - ppm;
     if (denom <= 0)
         return gasResult.innerHTML = "分母が 0 以下です。";
+
     const result = (v * ppm / denom) * 1000;
     gasResult.innerHTML = "採取量：" + result.toFixed(2) + " mL";
 }
 
+/* ▼ 薬液採取量 */
 function calcLiquid() {
     const t = parseFloat(roomTemp.value);
     const v = parseFloat(gasVolume.value);
     const mw = parseFloat(molWeight.value);
     const ppm = parseFloat(makePPM2.value);
     const d = parseFloat(density.value);
+
     if (t < 0 || v <= 0 || mw <= 0 || ppm <= 0 || d <= 0)
         return liquidResult.innerHTML = "入力値が不正です。";
+
     const tempFactor = 273 / (273 + t);
     const result = tempFactor * (v * mw * ppm) / (22.4 * 1000 * d);
+
     liquidResult.innerHTML = "採取量：" + result.toFixed(2) + " μL";
 }
 
+/* ▼ SiH4 */
 function calcSiH4() {
     const v = parseFloat(sih4_makeVolume.value);
     const ppm = parseFloat(sih4_makePPM.value);
     const cyl = parseFloat(sih4_cylinderPPM.value);
+
     if (v <= 0 || ppm <= 0 || cyl <= 0)
         return sih4Result.innerHTML = "入力値が不正です。";
+
     const denom = cyl - ppm;
     if (denom <= 0)
         return sih4Result.innerHTML = "分母が 0 以下です。";
+
     const take_ml = (v * ppm / denom) * 1000;
     const pressure = (take_ml / 1000) * 0.175;
+
     sih4Result.innerHTML =
         "SiH4採取量：" + take_ml.toFixed(2) + " mL<br>" +
         "圧力目安：" + pressure.toFixed(3) + " MPa";
 }
 
+/* ▼ PH3（新規追加） */
+function calcPH3() {
+    const v = parseFloat(ph3_makeVolume.value);
+    const ppm = parseFloat(ph3_makePPM.value);
+    const cyl = parseFloat(ph3_cylinderPPM.value);
+
+    if (v <= 0 || ppm <= 0 || cyl <= 0)
+        return ph3Result.innerHTML = "入力値が不正です。";
+
+    const denom = cyl - ppm;
+    if (denom <= 0)
+        return ph3Result.innerHTML = "分母が 0 以下です。";
+
+    const take_ml = (v * ppm / denom) * 1000;
+
+    /* 表から導いた係数：0.17 MPa/L */
+    const pressure = (take_ml / 1000) * 0.17;
+
+    ph3Result.innerHTML =
+        "PH₃採取量：" + take_ml.toFixed(2) + " mL<br>" +
+        "圧力目安：" + pressure.toFixed(3) + " MPa";
+}
+
+/* ▼ アンプル希釈量 */
 function calcAmpule() {
     const cc = parseFloat(amp_cc.value);
     const ppm = parseFloat(amp_ppm.value);
@@ -444,7 +362,7 @@ function calcAmpule() {
         "ガス作製希釈量：" + result.toFixed(2) + " L";
 }
 
-// ★ Service Worker 登録
+/* ▼ Service Worker */
 if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
         navigator.serviceWorker.register('service-worker.js')
@@ -452,6 +370,8 @@ if ('serviceWorker' in navigator) {
     });
 }
 </script>
-
 </body>
 </html>
+
+
+    
